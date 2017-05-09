@@ -6,7 +6,9 @@
   when: phpipam_upgrade
 
 - name: upgrade | archiving {{ phpipam_root }} directory to {{ phpipam_root }}.{{ date }}.tar.bz2
-  command: "tar cjf {{ phpipam_root }}.{{ date }}.tar.bz2 {{ phpipam_root }} " warn=no
+  command: "tar cjf {{ phpipam_root }}.{{ date }}.tar.bz2 {{ phpipam_root }} "
+  args:
+    warn: false
   when: phpipam_root_check.stat.exists and phpipam_upgrade
 
 - name : upgrade | removing {{ phpipam_root }} directory
