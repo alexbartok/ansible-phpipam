@@ -4,6 +4,11 @@
     path: "{{ phpipam_root }}"
   register: phpipam_root_check
 
-- name: upgrade | moving {{ phpipam_root }} directory to {{ phpipam_root }}.{{ date }}
-  command: "mv {{ phpipam_root }} {{ phpipam_root }}.{{ date }}"
+- name: upgrade | archiving {{ phpipam_root }} directory to {{ phpipam_root }}.{{ date }}.tar.bz2
+  command: "tar cjf {{ phpipam_root }}.{{ date }}.tar.bz2 {{ phpipam_root }} "
   when: phpipam_root_check.stat.exists
+
+- name : upgrade | removing {{ phpipam_root }} directory
+  file:
+    state: absent
+    path: "{{ phpipam_root }}/"
