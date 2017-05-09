@@ -3,12 +3,15 @@
   stat:
     path: "{{ phpipam_root }}"
   register: phpipam_root_check
+  when: phpipam_upgrade
 
 - name: upgrade | archiving {{ phpipam_root }} directory to {{ phpipam_root }}.{{ date }}.tar.bz2
   command: "tar cjf {{ phpipam_root }}.{{ date }}.tar.bz2 {{ phpipam_root }} "
-  when: phpipam_root_check.stat.exists
+  when: phpipam_root_check.stat.exists and phpipam_upgrade
+  warn: no
 
 - name : upgrade | removing {{ phpipam_root }} directory
   file:
     state: absent
     path: "{{ phpipam_root }}/"
+  when: phpipam_upgrade
